@@ -21,7 +21,7 @@
         $(function () {
             FastClick.attach(document.body);
         });
-        function $ajax(url, postData, showLoading, succCallback,type, dataType) {
+        function $ajax(url, postData, showLoading, succCallback,errorCallback,type, dataType) {
             var type = type || "post";
             var dataType = dataType || "json";
             var showLoading = showLoading;
@@ -40,8 +40,15 @@
 
                 success: function (res) {
                     console.log("res", res);
-                    if (succCallback) {
-                        succCallback(res);
+                    if(res.hasOwnProperty('code')&&res['code']==500){
+                        if(errorCallback){
+                            errorCallback();
+                        }
+                    }
+                    else{
+                        if (succCallback) {
+                            succCallback(res);
+                        }
                     }
                 },
 

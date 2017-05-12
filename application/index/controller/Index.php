@@ -3,6 +3,7 @@
 namespace app\index\controller;
 
 use think\Controller;
+use think\Db;
 
 class Index extends Controller
 {
@@ -10,6 +11,26 @@ class Index extends Controller
     public function index()
     {
         return view();
+    }
+
+    public function register()
+    {
+        return view();
+    }
+
+    public function submit_register()
+    {
+        $data['username'] = input('username');
+        $data['password'] = input('password');
+        $data['birthday'] = input('birthday');
+
+        $res = Db::table('user')->where('username',$data['username'])->find();
+        if($res){
+            return ['message'=>'该用户名已被注册','code'=>500,'data'=>null];
+        }else{
+            Db::table('user')->insert($data);
+            return ['message'=>'登录成功','code'=>200,'data'=>null];
+        }
     }
 
     //登录
@@ -28,16 +49,6 @@ class Index extends Controller
         } else {
             return ['message'=>'用户名或密码错误','code'=>500,'data'=>null];
         }
-    }
-
-    // 退出登录
-    public static function logout()
-    {
-        session("ext_user", NULL);
-        return [
-            "code" => 0,
-            "desc" => "退出成功"
-        ];
     }
 
 

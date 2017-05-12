@@ -18,17 +18,23 @@ class User extends Controller
 
     public function index()
     {
+        $user = session("ext_user");
+        $this->assign("username",$user['username']);
+        return view();
+    }
+
+    public function edit_userinfo()
+    {
+        $user = session("ext_user");
+        $this->assign("user",$user);
         return view();
     }
 
     // 退出登录
-    public static function logout()
+    public function logout()
     {
         session("ext_user", NULL);
-        return [
-            "code" => 0,
-            "desc" => "退出成功"
-        ];
+        $this->redirect("index/index");
     }
 
 

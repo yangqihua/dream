@@ -1,6 +1,6 @@
 <div style="margin-top: 40px;">
     <header class='demos-header'>
-        <h1 class="demos-title">用户登录</h1>
+        <h1 class="demos-title">用户注册</h1>
     </header>
     <div class="weui-cells weui-cells_form">
 
@@ -18,10 +18,12 @@
             </div>
         </div>
 
-    </div>
-
-    <div class="weui-btn-area">
-        <a class="weui-btn weui-btn_primary" href="javascript:" id="submit">登录</a>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="time-inline" class="weui-label">生日</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="time-inline" type="text" value="1994-11-02 11:02">
+            </div>
+        </div>
     </div>
 
     <div class="weui-btn-area">
@@ -31,21 +33,19 @@
 </div>
 
 <script>
+    $("#time-inline").datetimePicker();
     $("#register").click(function () {
-        location.href = "{:url('index/register')}";
-    });
-
-    $("#submit").click(function () {
         var username = $('#username').val();
         var password = $('#password').val();
+        var birthday = $('#datetime-picker').val();
 
         var type = type || "post";
         var dataType = dataType || "json";
         var showLoading = showLoading;
         $.ajax({
             type: type,
-            url: "{:url('index/login')}",
-            data: {'username': username, 'password': password},
+            url: "{:url('index/submit_register')}",
+            data: {'username': username, 'password': password, 'birthday': birthday},
             dataType: dataType,
 
             beforeSend: function () {  //开始loading
@@ -55,12 +55,12 @@
             },
 
             success: function (res) {
-                console.log(res);
+                console.log("res", res);
                 if (res.hasOwnProperty('code') && res['code'] == 500) {
                     $.toast(res.message, 'cancel');
                 } else {
-                    $.toast("登录成功", "success", function () {
-                        location.href = "{:url('dream/index')}";
+                    $.toast("注册成功", "success", function () {
+//                        location.href = "{:url('index/index')}";
                     });
                 }
             },
@@ -71,5 +71,17 @@
                 }
             }
         });
+//        $ajax(
+//            "{:url('index/submit_register')}",
+//            {'username': username, 'password': password, 'birthday': birthday},
+//            true,
+//            function (res) {  //成功
+//                location.href = "{:url('index/index')}";
+//            },
+//            function (res) {
+//                alert("用户名或密码错误");
+////                $.toptip('用户名或密码错误', 'error');
+//            }
+//        );
     });
 </script>
