@@ -56,7 +56,7 @@
 
             success: function (res) {
                 console.log(res);
-                if (res.hasOwnProperty('code') && res['code'] == 500) {
+                if (res.code === 500) {
                     $.toast(res.message, 'cancel');
                 } else {
                     $.toast("登录成功", "success", function () {

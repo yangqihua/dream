@@ -56,7 +56,7 @@
 
             success: function (res) {
                 console.log("res", res);
-                if (res.hasOwnProperty('code') && res['code'] == 500) {
+                if (res.code === 500) {
                     $.toast(res.message, 'cancel');
                 } else {
                     $.toast("注册成功", "success", function () {
@@ -64,7 +64,6 @@
                     });
                 }
             },
-
             complete: function () {   //结束loading
                 if (showLoading) {
                     $.hideLoading();
