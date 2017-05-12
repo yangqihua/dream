@@ -1,0 +1,44 @@
+<div style="margin-top: 40px;">
+    <header class='demos-header'>
+        <h1 class="demos-title">用户登录</h1>
+    </header>
+    <div class="weui-cells weui-cells_form">
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">用户名</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="username" type="text" placeholder="请输入用户名">
+            </div>
+        </div>
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">密码</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="password" type="text" placeholder="请输入密码">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="weui-btn-area">
+        <a class="weui-btn weui-btn_primary" href="javascript:" id="submit">确定</a>
+    </div>
+
+</div>
+
+<script>
+    $("#submit").click(function() {
+        var username = $('#username').val();
+        var password = $('#password').val();
+        $ajax(
+            "{:url('index/login')}",
+            {'username':username,'password':password},
+            function(res){  //成功
+                location.href = "{:url('dream/index')}";
+            },
+            function(res){  //失败
+                $.toptip(res.message, 'error');
+            }
+        );
+    });
+</script>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!--<meta HTTP-EQUIV="Pragma" CONTENT="no-cache">-->
+    <!--<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache">-->
+    <!--<meta HTTP-EQUIV="Expires" CONTENT="0">-->
+
+    <title>[title]</title>
+
+    <link rel="stylesheet" href="__STATIC__/lib/lib/weui.css">
+    <link rel="stylesheet" href="__STATIC__/lib/css/jquery-weui.css">
+    <link rel="stylesheet" href="__STATIC__/lib/css/demos.css">
+
+    <script src="__STATIC__/lib/lib/jquery-2.1.4.js"></script>
+    <script src="__STATIC__/lib/lib/fastclick.js"></script>
+    <script>
+        $(function () {
+            FastClick.attach(document.body);
+        });
+        function $ajax(url, postData, succCallback, errorCallback, type, dataType) {
+            var type = type || "post";
+            var dataType = dataType || "json";
+
+            $.ajax({
+                type: type,
+                url: url,
+                data: postData,
+                dataType: dataType,
+
+                beforeSend: function () {  //开始loading
+                    $.showLoading("正在加载...");
+                },
+
+                success: function (res) {
+                    console.log("res",res);
+                    if (res.code=='200') {
+                        if (succCallback) {
+                            succCallback(res);
+                        }
+                    } else {
+                        if (errorCallback) {
+                            errorCallback(res);
+                        }
+                    }
+                },
+
+                complete: function () {   //结束loading
+                    //$(".js_loading").remove();
+                    $.hideLoading();
+                }
+            });
+        }
+
+    </script>
+    <script src="__STATIC__/lib/js/jquery-weui.js"></script>
+</head>
+<body ontouchstart>
+
+
