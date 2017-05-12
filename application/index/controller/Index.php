@@ -6,14 +6,9 @@ use think\Controller;
 
 class Index extends Controller
 {
-    public function _initialize()
-    {
-//        echo 'init<br/>';
-    }
 
     public function index()
     {
-//        echo dump($_SERVER);exit;
         return view();
     }
 

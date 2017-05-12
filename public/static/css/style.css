@@ -1,0 +1,132 @@
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+.dream-header {
+    position: fixed;
+    height: 45px;
+    top: 0;
+    right: 0;
+    left: 0;
+    /*background-color: #ff9600;*/
+    background-color: #20A0FF;
+    z-index: 1002;
+}
+
+.dream-header-middle {
+    width: 100%;
+    height: 45px;
+    text-align: center;
+    font-size: 20px;
+    color: #ffffff;
+    line-height: 45px;
+}
+
+.dream-item-space {
+    background-color: #ebebeb;
+    width: 100%;
+    height: 10px
+}
+
+.dream-header-left {
+    height: 30px;
+    /*width: 30px;*/
+    position: absolute;
+    top: 7px;
+    left: 8px;
+}
+
+.dream-header-right {
+    position: absolute;
+    right: 11px;
+    top: 0;
+    height: 45px;
+    line-height: 45px;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+.dream-tabbar-item {
+    width: 36px;
+    height: 36px;
+    margin: 6px auto
+}
+
+/*list css*/
+
+.dream-list-container {
+    padding-top: 45px;
+    padding-bottom: 50px;
+}
+
+.dream-item-container {
+    padding: 15px 15px 30px 15px;
+    background-color: #ffffff;
+}
+
+.dream-item-content-container {
+    margin-left: 40px;
+    margin-right: 6px;
+}
+
+.dream-item-content {
+    font-size: 17px;
+    color: #2b2e30;
+    margin-top: 4px;
+    line-height: 14px;
+}
+
+.dream-item-name {
+    font-size: 12px;
+    color: #20A0FF;
+    margin-left: 6px;
+}
+
+.dream-item-name-img {
+    height: 30px;
+    width: 30px;
+    vertical-align: middle;
+    border-radius: 50%;
+    background-color: #000000;
+}
+
+.dream-item-title {
+    line-height: 20px;
+}
+
+.dream-item-detail {
+    margin-top: 4px;
+
+    line-height: 20px;
+    font-size: 14px;
+    color: #475669;
+    width: 100%;
+
+    word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box; /** 将对象作为伸缩盒子模型显示 **/
+    -webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
+    -webkit-line-clamp: 3; /** 显示的行数 **/
+    overflow: hidden; /** 隐藏超出的内容 **/
+}
+
+.dream-item-footer {
+    margin-top: 6px;
+    margin-right: 4px;
+    line-height: 24px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #8e8e8e;
+}
+
+.dream-fabu-btn {
+    position: fixed;
+    right: 12px;
+    bottom: 52px;
+    height: 80px;
+    width: 80px;
+}
+

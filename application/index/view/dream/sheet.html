@@ -1,24 +1,25 @@
-
 <!--{include file="public/tpl/top" /}-->
 
+<div class="weui-navbar dream-header">
+    <div class="dream-header-middle">
+        心愿单
+    </div>
+</div>
+
 <div class="weui-tab">
-    <div class="weui-tab__bd">
-        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
-            <h1>页面一</h1>
+    <div class="dream-list-container">
+        <div id="dream_list">
         </div>
-        <div id="tab2" class="weui-tab__bd-item">
-            <h1>页面二</h1>
+        <div class="weui-loadmore">
+            <i class="weui-loading"></i>
+            <span class="weui-loadmore__tips">正在加载</span>
         </div>
-        <div id="tab3" class="weui-tab__bd-item">
-            <h1>页面三</h1>
-        </div>
-        <div id="tab4" class="weui-tab__bd-item">
-            <h1>页面四</h1>
-        </div>
+
     </div>
 
-    <div class="weui-tabbar">
-        <a href="{:url('poll')}" class="weui-tabbar__item">
+
+    <div class="weui-tabbar" style="position: fixed;bottom: 0;right: 0;left: 0">
+        <a href="{:url('poll')}" class="weui-tabbar__item ">
             <div class="weui-tabbar__icon">
                 <img src="__STATIC__/img/icon_nav_button.png" alt="">
             </div>
@@ -26,17 +27,146 @@
         </a>
         <a href="javascript:;" class="weui-tabbar__item weui-bar__item--on">
             <div class="weui-tabbar__icon">
-                <img src="__STATIC__/img/icon_nav_icons.png " alt="">
+                <img src="__STATIC__/img/icon_nav_icons.png" alt="">
             </div>
             <p class="weui-tabbar__label">心愿单</p>
         </a>
-        <a href="{:url('me')}" class="weui-tabbar__item">
+        <a href="{:url('user/index')}" class="weui-tabbar__item">
             <div class="weui-tabbar__icon">
                 <img src="__STATIC__/img/icon_nav_cell.png" alt="">
             </div>
             <p class="weui-tabbar__label">个人中心</p>
         </a>
     </div>
+    <div class="dream-fabu-btn">
+        <a href="javascript:;" style="width: 80px;height: 80px;"><img
+                src="__STATIC__/img/btn_fabu@2x.png" height="100%"></a>
+    </div>
 </div>
 
+<script type="application/javascript">
+
+    $(function () {
+
+        var loading = false;
+        var mPage = 1;
+        var mPageSize = 10;
+        var lastPageSize = 0;
+
+
+        $(document.body).infinite().on("infinite", function () {
+            if (loading) return;
+            loading = true;
+            getDreamList(mPage, mPageSize);
+        });
+        getDreamList(mPage, mPageSize);
+
+        function getDreamList(page = 1, pageSize = 10) {
+            $ajax(
+                "{:url('dream/getSheet')}",
+                {'page': page, 'pageSize': pageSize},
+                false,
+                function (res) {  //成功
+                    var dreamList = res;
+                    lastPageSize = dreamList.length;
+                    if (dreamList.length < 10) {
+                        $('.weui-loadmore').replaceWith('<div class="weui-loadmore weui-loadmore_line"><span class="weui-loadmore__tips">暂无数据</span></div>');
+                        $(document.body).destroyInfinite(); //销毁该组件
+                    }
+                    insertHtml(dreamList);
+                    loading = false;
+                    mPage++;
+                }
+            )
+        }
+
+        function insertHtml(dreamList) {
+            for (var i = 0; i < dreamList.length; i++) {
+                var dream = dreamList[i];
+                var upvote_html = '<img src="__STATIC__/img/unvote.png" class="praise-img"/><span class="praise-txt">' + dream.upvote_count + '</span>';
+                if(dream.is_vote==1){
+                    upvote_html = '<img src="__STATIC__/img/vote.png" class="praise-img"/><span class="praise-txt hover">' + dream.upvote_count + '</span>';
+                }
+                var html_item = '\
+                        <div class="dream-item-space"></div>\
+                        <div class="dream-item-container" id="' + dream.id + '">\
+                            <div style="position: relative;">\
+                                <img src="__STATIC__/img/default.jpg" class="dream-item-name-img">\
+                                <span class="dream-item-name">' + dream.username + '</span>\
+                            </div>\
+                            <div class="dream-item-content-container">\
+                                <div class="dream-item-content">\
+                                    <div>\
+                                        <span class="dream-item-title">' + dream.title + '</span>\
+                                        <div class="dream-item-detail">' + dream.content + '</div>\
+                                    </div>\
+                                </div>\
+                                <div class="dream-item-footer">\
+                                <div>' + dream.create_time + '</div>\
+                                <div class="praise">'+upvote_html+'<div class="add-num">\
+                                        <em>+1</em>\
+                                    </div>\
+                                    </div>\
+                                </div>\
+                            </div>\
+                        </div>';
+                $("#dream_list").append(html_item);
+            }
+        }
+
+    });
+
+
+    $(".dream-fabu-btn").on('click', function () {
+        location.href = "{:url('dream/publish')}"
+    });
+
+    /* @author:yangqihua
+     * 动态点赞
+     * 此效果包含css3，部分浏览器不兼容（如：IE10以下的版本）
+     */
+    $(function () {
+        $("#dream_list").on('click', '.praise', function () {
+            var _this = $(this);
+            var praise = _this.parent().parent().parent();
+
+            var praise_img = $(_this.children().get(0));
+            var praise_txt = $(_this.children().get(1));
+            var text_box = $(_this.children().get(2));
+            var num = parseInt(praise_txt.text());
+            if (praise_img.attr("src") == ("__STATIC__/img/vote.png")) {
+                $ajax(
+                    "{:url('dream/upvote')}",
+                    {'dreamId': praise.attr("id")},
+                    false,
+                    function (res) {  //成功
+                        praise_img.replaceWith("<img src='__STATIC__/img/unvote.png' class='praise-img' class='animation' />");
+                        praise_txt.removeClass("hover");
+                        $(text_box.children().get(0)).replaceWith("<em class='add-animation'>-1</em>");
+                        text_box.show();
+                        $(".add-animation").removeClass("hover");
+                        num -= 1;
+                        praise_txt.text(num);
+                    }
+                );
+            } else {
+                $ajax(
+                    "{:url('dream/upvote')}",
+                    {'dreamId': praise.attr("id")},
+                    false,
+                    function (res) {  //成功
+                        praise_img.replaceWith("<img src='__STATIC__/img/vote.png' class='praise-img' class='animation' />");
+                        praise_txt.addClass("hover");
+                        $(text_box.children().get(0)).replaceWith("<em class='add-animation'>+1</em>");
+                        text_box.show();
+                        $(".add-animation").addClass("hover");
+                        num += 1;
+                        praise_txt.text(num);
+                    }
+                );
+
+            }
+        });
+    })
+</script>
 <!--{include file="public/tpl/bottom" /}-->

@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="__STATIC__/lib/lib/weui.css">
     <link rel="stylesheet" href="__STATIC__/lib/css/jquery-weui.css">
     <link rel="stylesheet" href="__STATIC__/lib/css/demos.css">
+    <link rel="stylesheet" href="__CSS__/style.css">
+    <link rel="stylesheet" href="__CSS__/heart.css">
 
     <script src="__STATIC__/lib/lib/jquery-2.1.4.js"></script>
     <script src="__STATIC__/lib/lib/fastclick.js"></script>
@@ -19,9 +21,10 @@
         $(function () {
             FastClick.attach(document.body);
         });
-        function $ajax(url, postData, succCallback, errorCallback, type, dataType) {
+        function $ajax(url, postData, showLoading, succCallback,type, dataType) {
             var type = type || "post";
             var dataType = dataType || "json";
+            var showLoading = showLoading;
 
             $.ajax({
                 type: type,
@@ -30,25 +33,22 @@
                 dataType: dataType,
 
                 beforeSend: function () {  //开始loading
-                    $.showLoading("正在加载...");
+                    if(showLoading){
+                        $.showLoading("正在加载...");
+                    }
                 },
 
                 success: function (res) {
-                    console.log("res",res);
-                    if (res.code=='200') {
-                        if (succCallback) {
-                            succCallback(res);
-                        }
-                    } else {
-                        if (errorCallback) {
-                            errorCallback(res);
-                        }
+                    console.log("res", res);
+                    if (succCallback) {
+                        succCallback(res);
                     }
                 },
 
                 complete: function () {   //结束loading
-                    //$(".js_loading").remove();
-                    $.hideLoading();
+                    if(showLoading){
+                        $.hideLoading();
+                    }
                 }
             });
         }

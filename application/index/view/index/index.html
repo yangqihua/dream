@@ -33,6 +33,7 @@
         $ajax(
             "{:url('index/login')}",
             {'username':username,'password':password},
+            true,
             function(res){  //成功
                 location.href = "{:url('dream/index')}";
             },
