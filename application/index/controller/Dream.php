@@ -8,7 +8,6 @@
 
 namespace app\index\controller;
 
-use function MongoDB\BSON\toJSON;
 use think\Controller;
 use think\Db;
 
