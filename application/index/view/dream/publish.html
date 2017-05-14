@@ -46,6 +46,13 @@
         </div>
     </div>
 
+    <!--<div class="weui-cell weui-cell_switch">-->
+        <!--<div class="weui-cell__bd">是否公开心愿</div>-->
+        <!--<div class="weui-cell__ft">-->
+            <!--<input class="weui-switch" type="checkbox" id="dreamIsPublic">-->
+        <!--</div>-->
+    <!--</div>-->
+
 
     <div class="weui-btn-area">
         <a class="weui-btn weui-btn_primary" href="javascript:" id="submit">确定</a>
@@ -58,7 +65,7 @@
         var dreamTitle = $('#dreamTitle').val();
         var dreamContent = $('#dreamContent').val();
         var dreamPeriod = $('#dreamPeriod').val();
-        var dreamIsPublic = $('#dreamIsPublic').val() == 'on' ? 1 : 0;
+        var dreamIsPublic = $('#dreamIsPublic')[0].checked ? 1 : 0;
 
 
         $ajax(
