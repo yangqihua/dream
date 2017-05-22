@@ -29,8 +29,8 @@
     </div>
 
 </div>
-
-<script>
+<script type="text/javascript">
+    console.log("hello world1");
     $("#register").click(function () {
         location.href = "{:url('index/register')}";
     });
@@ -39,36 +39,29 @@
         var username = $('#username').val();
         var password = $('#password').val();
 
-        var type = type || "post";
-        var dataType = dataType || "json";
-        var showLoading = showLoading;
         $.ajax({
-            type: type,
+            type: "post",
             url: "{:url('index/login')}",
             data: {'username': username, 'password': password},
-            dataType: dataType,
+            dataType: "json",
 
             beforeSend: function () {  //开始loading
-                if (showLoading) {
-                    $.showLoading("正在加载...");
-                }
+                $.showLoading("正在加载...");
             },
 
             success: function (res) {
-                console.log(res);
-                if (res.code === 500) {
-                    $.toast(res.message, 'cancel');
+                // console.log(res);
+                if (res.code == 500) {
+                    // $.toast(res.message, 'cancel');
                 } else {
-                    $.toast("登录成功", "success", function () {
+                    // $.toast("登录成功", "success", function () {
                         location.href = "{:url('dream/index')}";
-                    });
+                    // });
                 }
             },
 
             complete: function () {   //结束loading
-                if (showLoading) {
-                    $.hideLoading();
-                }
+                $.hideLoading();
             }
         });
     });
