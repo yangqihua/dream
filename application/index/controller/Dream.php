@@ -101,7 +101,7 @@ class Dream extends Controller
         return view();
     }
 
-    public function editDream()
+    public function edit_dream()
     {
         $dreamId = input("dreamId");
         $data = Db::table('dream')->where('id', $dreamId)->find();
