@@ -52,7 +52,7 @@ class Index extends Controller
                 $create_time = strtotime($dream['create_time']);
                 $delta = time() - $create_time;
                 for($i=0;$i<intval($delta/$period);$i++){
-                    $warn_date = date('Y-m-d',$create_time+$period*$i);
+                    $warn_date = date('Y-m-d H:i:s',$create_time+$period*$i);
                     $warn = Db::table('warn')->where('warn_date', $warn_date)->where('dream_id',$dream['id'])->find();
                     if(!$warn){
                         Db::table('warn')->insert(['dream_id'=>$dream['id'],'warn_date'=>$warn_date,'user_id'=>$data['id']]);
