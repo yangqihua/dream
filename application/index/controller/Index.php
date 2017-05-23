@@ -45,6 +45,21 @@ class Index extends Controller
         if ($data) {
             unset($user["password"]);
             session("ext_user", $data);
+
+            $dreams = Db::table('dream')->where('user_id', $data['id'])->select();
+            foreach ($dreams as $dream){
+                $period = $dream['period']*24*3600;
+                $create_time = strtotime($dream['create_time']);
+                $delta = time() - $create_time;
+                for($i=0;$i<intval($delta/$period);$i++){
+                    $warn_date = date('Y-m-d',$create_time+$period*$i);
+                    $warn = Db::table('warn')->where('warn_date', $warn_date)->where('dream_id',$dream['id'])->find();
+                    if(!$warn){
+                        Db::table('warn')->insert(['dream_id'=>$dream['id'],'warn_date'=>$warn_date,'user_id'=>$data['id']]);
+                    }
+                }
+            }
+
             return ['message'=>'登录成功','code'=>200,'data'=>null];
         } else {
             return ['message'=>'用户名或密码错误','code'=>500,'data'=>null];

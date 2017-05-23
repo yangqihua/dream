@@ -1,0 +1,72 @@
+{include file="public/tpl/top" title="编辑心愿" /}
+
+<div style="padding-top: 45px;">
+
+    <div class="dream-input-container" style="margin-top: 55px">
+        <div class="weui-cells__title">标题</div>
+        <div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" id="dreamTitle" placeholder="请输入心愿标题" value="{$dream.title}">
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-cells__title">心愿描述</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" id="dreamContent" placeholder="请输入心愿描述" rows="4">{$dream.content}</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="weui-cells__title">提醒周期</div>
+    <div class="weui-cells">
+        <div class="weui-cell weui-cell_select">
+            <div class="weui-cell__bd">
+                <select class="weui-select" name="period" id="dreamPeriod">
+                    <option {$dream.period==1?'selected=selected':''} value="1">每天</option>
+                    <option {$dream.period==7?'selected=selected':''} value="7">一周</option>
+                    <option {$dream.period==30?'selected=selected':''} value="30">一个月</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="weui-cell weui-cell_switch">
+        <div class="weui-cell__bd">是否公开心愿</div>
+        <div class="weui-cell__ft">
+            <label for="dreamIsPublic" class="weui-switch-cp">
+                <input id="dreamIsPublic" class="weui-switch-cp__input" type="checkbox" checked="{$dream.is_public==1?'checked':''}">
+                <div class="weui-switch-cp__box"></div>
+            </label>
+        </div>
+    </div>
+
+
+    <div class="weui-btn-area">
+        <a class="weui-btn weui-btn_primary" href="javascript:" id="submit">确定</a>
+    </div>
+
+</div>
+
+<script>
+    $("#submit").click(function () {
+        var dreamId = "{$dream.id}";
+        var dreamTitle = $('#dreamTitle').val();
+        var dreamContent = $('#dreamContent').val();
+        var dreamPeriod = $('#dreamPeriod').val();
+        var dreamIsPublic = $('#dreamIsPublic')[0].checked ? 1 : 0;
+
+        $ajax(
+            "{:url('dream/addSheet')}",
+            {'dreamId':dreamId,'title': dreamTitle, 'content': dreamContent, 'period': dreamPeriod, 'is_public': dreamIsPublic},
+            true,
+            function (res) {  //成功
+                location.href = "{:url('dream/sheet')}";
+            }
+        );
+    });
+</script>

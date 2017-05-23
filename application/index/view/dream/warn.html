@@ -1,10 +1,4 @@
-<!--{include file="public/tpl/top" /}-->
-
-<div class="weui-navbar dream-header">
-    <div class="dream-header-middle">
-        心愿单
-    </div>
-</div>
+{include file="public/tpl/top" title="我的提醒" /}
 
 <div class="weui-tab">
     <div class="dream-list-container">
@@ -15,32 +9,6 @@
             <span class="weui-loadmore__tips">正在加载</span>
         </div>
 
-    </div>
-
-
-    <div class="weui-tabbar" style="position: fixed;bottom: 0;right: 0;left: 0">
-        <a href="{:url('poll')}" class="weui-tabbar__item ">
-            <div class="weui-tabbar__icon">
-                <img src="__STATIC__/img/icon_nav_button.png" alt="">
-            </div>
-            <p class="weui-tabbar__label">心愿池</p>
-        </a>
-        <a href="javascript:;" class="weui-tabbar__item weui-bar__item--on">
-            <div class="weui-tabbar__icon">
-                <img src="__STATIC__/img/icon_nav_icons.png" alt="">
-            </div>
-            <p class="weui-tabbar__label">心愿单</p>
-        </a>
-        <a href="{:url('user/index')}" class="weui-tabbar__item">
-            <div class="weui-tabbar__icon">
-                <img src="__STATIC__/img/icon_nav_cell.png" alt="">
-            </div>
-            <p class="weui-tabbar__label">个人中心</p>
-        </a>
-    </div>
-    <div class="dream-fabu-btn">
-        <a href="javascript:;" style="width: 80px;height: 80px;"><img
-                src="__STATIC__/img/btn_fabu@2x.png" height="100%"></a>
     </div>
 </div>
 
@@ -63,7 +31,7 @@
 
         function getDreamList(page = 1, pageSize = 10) {
             $ajax(
-                "{:url('dream/getSheet')}",
+                "{:url('dream/getWarn')}",
                 {'page': page, 'pageSize': pageSize},
                 false,
                 function (res) {  //成功
@@ -101,12 +69,8 @@
                                     </div>\
                                 </div>\
                                 <div class="dream-item-footer">\
-                                <div>' + dream.create_time + '</div>\
-                                <div class="praise">'+upvote_html+'<div class="add-num">\
-                                        <em>+1</em>\
-                                    </div>\
-                                    </div>\
-                                </div>\
+                                <div>创建时间：' + dream.create_time + '</div>\
+                                <div class="color-danger">提醒时间：' + dream.warn_date + '</div>\
                             </div>\
                         </div>';
                 $("#dream_list").append(html_item);

@@ -1,0 +1,67 @@
+<div class="weui_navbar dream-header">
+    <a href="javascript:history.go(-1);;" class="dream-header-left"><img
+            src="__STATIC__/img/back@2x.png" style="height: 100%;"
+    ></a>
+    <div class="dream-header-middle">
+        心愿详情
+    </div>
+    <a href="javascript:;">
+        <div class="dream-header-right">
+            <span>操作</span>
+        </div>
+    </a>
+</div>
+
+<div class="sheet-detail dream-list-container">
+    <div class="dream-item-container" id="{$dream.id}">
+        <div style="position: relative;">
+            <img src="__STATIC__/img/default.jpg" class="dream-item-name-img">
+            <span class="dream-item-name">{$dream.username}</span>
+        </div>
+        <div class="dream-item-content-container">
+            <div class="dream-item-content">
+                <div>
+                    <span class="dream-item-title">{$dream.title}</span>
+                    <div class="dream-item-detail">{$dream.content}</div>
+                </div>
+            </div>
+            <div class="dream-item-footer">
+                <div>{$dream.create_time}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+
+    $(function () {
+        $(".dream-header-right").on('click',function () {
+            $.actions({
+                title:"选择操作",
+                actions: [{
+                    text: "编辑",
+                    className: "color-primary",
+                    onClick: function() {
+                        location.href = "{:url('dream/editDream')}?dreamId={$dream.id}";
+                        //do something
+                    }
+                },{
+                    text: "删除",
+                    className: "color-danger",
+                    onClick: function() {
+                        $ajax(
+                            "{:url('dream/deleteDream')}?dreamId={$dream.id}",
+                            null,
+                            true,
+                            function (res) {  //成功
+                                location.href = "{:url('dream/sheet')}";
+                            }
+                        );
+                    }
+                }]
+            });
+        });
+    })
+</script>
+<!--{include file="public/tpl/bottom" /}-->
