@@ -1,11 +1,80 @@
 {include file="public/tpl/top" title="编辑信息"/}
 
+<div style="margin-top: 40px;">
+    <header class='demos-header'>
+    </header>
+    <div class="weui-cells weui-cells_form">
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">用户名</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="username" type="text" value="{$user.username}" placeholder="请输入用户名">
+            </div>
+        </div>
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">密码</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="password" type="text" value="{$user.password}" placeholder="请输入密码">
+            </div>
+        </div>
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="time-inline" class="weui-label">生日</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="time-inline" type="text" value='{$user.birthday}'>
+            </div>
+        </div>
+    </div>
+
+    <div class="weui-btn-area">
+        <a class="weui-btn weui-btn_primary" href="javascript:" id="edit_userinfo">更新</a>
+    </div>
+
+</div>
 
 <script type="application/javascript">
 
     $(function () {
+        $("#time-inline").datetimePicker();
+        $("#edit_userinfo").click(function () {
+            var userId = "{$user.id}";
+            var username = $('#username').val();
+            var password = $('#password').val();
+            var birthday = $('#time-inline').val();
 
+            var type = type || "post";
+            var dataType = dataType || "json";
+            var showLoading = showLoading;
+            $.ajax({
+                type: type,
+                url: "{:url('user/submit_edit_userinfo')}",
+                data: {'userId':userId,'username': username, 'password': password, 'birthday': birthday},
+                dataType: dataType,
 
+                beforeSend: function () {  //开始loading
+                    if (showLoading) {
+                        $.showLoading("正在加载...");
+                    }
+                },
+
+                success: function (res) {
+                    console.log("res", res);
+                    if (res.code === 500) {
+                        $.toast(res.message, 'cancel');
+                    } else {
+                        $.toast("更新成功", "success", function () {
+                            location.href = "{:url('user/index')}";
+                        });
+                    }
+                },
+                complete: function () {   //结束loading
+                    if (showLoading) {
+                        $.hideLoading();
+                    }
+                }
+            });
+        });
     });
 
 </script>
